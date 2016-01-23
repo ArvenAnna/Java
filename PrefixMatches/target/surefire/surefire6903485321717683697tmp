@@ -1,8 +1,0 @@
-#surefire
-#Wed Jan 20 21:26:40 EET 2016
-maven.ext.class.path=C\:\\Program Files\\NetBeans 8.1\\java\\maven-nblib\\netbeans-eventspy.jar
-user.dir=C\:\\Documents and Settings\\Alex\\\u041C\u043E\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\NetBeansProjects\\PrefixMatches\\PrefixMatches
-file.encoding=UTF-8
-localRepository=C\:\\Documents and Settings\\Alex\\.m2\\repository
-basedir=C\:\\Documents and Settings\\Alex\\\u041C\u043E\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\NetBeansProjects\\PrefixMatches\\PrefixMatches
-test=com.anna.prefixmatches.MyTrieTest
