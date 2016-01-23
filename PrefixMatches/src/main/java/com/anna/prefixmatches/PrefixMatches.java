@@ -7,8 +7,7 @@ package com.anna.prefixmatches;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +73,6 @@ public class PrefixMatches {
         return trie.size();
     }
 
-    // 
     /**
      * Предоставляет набор слов начинающихся с префикса k разных длин
      * @param pref префикс
@@ -83,18 +81,61 @@ public class PrefixMatches {
      * то возвращает набор слов k разных длин начиная с минимальной, 
      * и начинающихся с данного префикса pref.
      */
-    public Iterable<String> wordsWithPrefix(String pref, int k) {
-        List<String> words = new ArrayList<String>();
-        if (pref.length() >= 2) {
+    public Iterable<String> wordsWithPrefix(final String pref, final int k) {
+        
+        if(pref == null || k<1) return new Iterable<String>() {
+            @Override
+            public Iterator<String> iterator() {
+                return new Iterator<String>() {
+                    @Override
+                    public boolean hasNext() {
+                        return false;
+                    }
 
-            for (String word : trie.wordsWithPrefix(pref)) {
-                if (word.length() <= (pref.length() + k - 1)) {
-                    words.add(word);
-                }
+                    @Override
+                    public String next() {
+                        return null;
+                    }
+
+                    @Override
+                    public void remove() {
+                    }
+                };
             }
+        };
+        
+        return new Iterable<String>(){
+            @Override
+            public Iterator iterator() {
+                return new Iterator<String>(){
+                    
+                    private String nextElement;
+                    private Iterator oldIterator = trie.wordsWithPrefix(pref).iterator();
+                    
+                    @Override
+                    public boolean hasNext() {
+                        if (pref.length() >= 2 && oldIterator.hasNext()) {
+                            nextElement = (String)oldIterator.next();
+                            if(nextElement.length() <= (pref.length() + k - 1)){
+                                return true;
+                            }
+                        }
+                        nextElement = null;
+                        return false;
+                    }
 
-        }
-        return words;
+                    @Override
+                    public String next() {
+                        return nextElement;
+                    }
+
+                    @Override
+                    public void remove() {
+                         oldIterator.remove();
+                    }
+                };
+            } 
+        };
     }
 
     // 
@@ -110,7 +151,7 @@ public class PrefixMatches {
     }
 
     public static void main(String... args) {
-        Trie trie = new MyTrie();
+        Trie trie = new RVTrie();
         PrefixMatches matcher = new PrefixMatches(trie); 
         try {
             Scanner in = new Scanner(new File("src\\test\\resources\\words-333333.txt"));
@@ -123,17 +164,23 @@ public class PrefixMatches {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PrefixMatches.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         System.out.println(matcher.contains("ffds"));
         System.out.println(matcher.contains("more"));
         System.out.println(matcher.size());
         System.out.println(matcher.delete("more"));
         System.out.println(matcher.contains("more"));
+        System.out.println(matcher.size());
         
-        Iterable<String> list = matcher.wordsWithPrefix("mo", 5);
+        System.out.println("----------");
+        
+        Iterable<String> list = matcher.trie.wordsWithPrefix("vas");
+        Iterator iter = list.iterator();
 
         System.out.println("----------");
-        for (String str : list) {
-            System.out.println(str);
+        
+        while(iter.hasNext()){
+            System.out.println(iter.next());
         }
     }
 }

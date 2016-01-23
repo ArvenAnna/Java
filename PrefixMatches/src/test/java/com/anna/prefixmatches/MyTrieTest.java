@@ -5,12 +5,7 @@
  */
 package com.anna.prefixmatches;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.Iterator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,12 +14,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test for MyTrie class
+ * Test for RVTrie class
+ *
  * @author Hanna_Sira
  */
 public class MyTrieTest {
 
-    MyTrie trie;
+    RVTrie trie;
 
     public MyTrieTest() {
     }
@@ -46,143 +42,176 @@ public class MyTrieTest {
     }
 
     /**
-     * Test of add and contains method, of class MyTrie.
+     * Test of add and contains methods, of class RVTrie.
      */
     @Test
-    public void testAdd() {
+    public void testAddAndContains() {
+        System.out.println("add and contains");
+        Tuple tuple = new Tuple("vasilisa");
+        trie = new RVTrie();
+        trie.add(tuple);
+        assertEquals(true, trie.contains("vasilisa"));
+    }
+
+    /**
+     * Test of add method with null argument, of class RVTrie.
+     */
+    @Test
+    public void testAddWithNullArgument() {
         System.out.println("add");
-        trie = new MyTrie();
-        try {
-            Scanner in = new Scanner(new File("src\\test\\resources\\words-333333.txt"));
-            int subStringPosition = 15; // for given file
-            while (in.hasNext()) {
-                String word = in.nextLine().substring(subStringPosition);
-                trie.add(new Tuple(word));
-                assertEquals(true, trie.contains(word));
-            }
-            in.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("file for test is not found");
-        }
-
+        Tuple tuple = null;
+        int expected = 0;
+        trie = new RVTrie();
+        trie.add(tuple);
+        assertEquals(expected, trie.size());
     }
 
     /**
-     * Test of delete method, of class MyTrie.
+     * Test of contains method with null argument, of class RVTrie.
      */
     @Test
-    public void testDelete() {
-        System.out.println("delete");
-        trie = new MyTrie();
-        try {
-            Scanner in = new Scanner(new File("src\\test\\resources\\words-333333.txt"));
-            int subStringPosition = 15; // for given file
-            while (in.hasNext()) {
-                String word = in.nextLine().substring(subStringPosition);
-                trie.add(new Tuple(word));
-                assertEquals(true, trie.delete(word));
-            }
-            in.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("file for test is not found");
-        }
-        assertEquals(false, trie.delete("nonexistingstring"));
+    public void testContainsWithNullArgument() {
+        System.out.println("contains");
+        String word = null;
+        trie = new RVTrie();
+        assertEquals(false, trie.contains(word));
     }
 
     /**
-     * Test of words method, of class MyTrie.
+     * Test of delete method, of class RVTrie.
+     */
+    @Test
+    public void testDeleteSuccesfully() {
+        System.out.println("delete");
+        Tuple tuple = new Tuple("vasilisa");
+        trie = new RVTrie();
+        trie.add(tuple);
+        assertEquals(true, trie.delete("vasilisa"));
+    }
+
+    /**
+     * Test of delete method, of class RVTrie.
+     */
+    @Test
+    public void testDeleteNonSuccesfully() {
+        System.out.println("delete");
+        trie = new RVTrie();
+        assertEquals(false, trie.delete("vasilisa"));
+    }
+
+    /**
+     * Test of delete method with null argument, of class RVTrie.
+     */
+    @Test
+    public void testDeleteWithNullArgument() {
+        System.out.println("delete");
+        String word = null;
+        trie = new RVTrie();
+        assertEquals(false, trie.delete(word));
+    }
+
+    /**
+     * Test of words method, of class RVTrie.
      */
     @Test
     public void testWords() {
         System.out.println("words");
-        trie = new MyTrie();
-        List<String> expectedResult = new ArrayList<String>();
-        try {
-            Scanner in = new Scanner(new File("src\\test\\resources\\words-333333.txt"));
-            int subStringPosition = 15; // for given file
-            while (in.hasNext()) {
-                String word = in.nextLine().substring(subStringPosition);
-                trie.add(new Tuple(word));
-                expectedResult.add(word);
-            }
-            in.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("file for test is not found");
-        }
-        assertEquals(true, expectedResult.contains("more"));
-
-        //code for full checking (requires a lot of time)
-//        for(String word:trie.words()){
-//            assertEquals(true, expectedResult.contains(word));
-//        }
+        Tuple tuple = new Tuple("vasilisa");
+        Tuple tuple2 = new Tuple("vas");
+        trie = new RVTrie();
+        trie.add(tuple);
+        trie.add(tuple2);
+        Iterator iter = trie.words().iterator();
+        assertEquals(true, iter.hasNext());
+        assertEquals("vas", iter.next());
+        assertEquals(true, iter.hasNext());
+        assertEquals("vasilisa", iter.next());
+        assertEquals(false, iter.hasNext());
+        assertEquals(null, iter.next());
     }
 
     /**
-     * Test of wordsWithPrefix method, of class MyTrie.
+     * Test of wordsWithPrefix method, of class RVTrie.
      */
     @Test
     public void testWordsWithPrefix() {
         System.out.println("wordsWithPrefix");
-        trie = new MyTrie();
-        List<String> expectedResult = new ArrayList<String>();
-        try {
-            Scanner in = new Scanner(new File("src\\test\\resources\\words-333333.txt"));
-            int subStringPosition = 15; // for given file
-            while (in.hasNext()) {
-                String word = in.nextLine().substring(subStringPosition);
-                trie.add(new Tuple(word));
-                expectedResult.add(word);
-            }
-            in.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("file for test is not found");
-        }
-
-        String pref = "mo";
-
-        ListIterator<String> iter = expectedResult.listIterator();
-
-        while (iter.hasNext()) {
-            String word = iter.next();
-            char arr[] = word.toCharArray();
-            if (arr.length > 2) {
-                if (arr[0] != 'm' || arr[1] != 'o') {
-                    iter.remove();
-                }
-            } else {
-                iter.remove();
-            }
-        }
-
-        assertEquals(true, expectedResult.contains("more"));
-
-        //code for full checking (requires a lot of time)
-//        for(String word:trie.wordsWithPrefix(pref)){
-//            assertEquals(true, expectedResult.contains(word));
-//        }
+        Tuple tuple = new Tuple("vasilisa");
+        Tuple tuple2 = new Tuple("vas");
+        String pref = "va";
+        trie = new RVTrie();
+        trie.add(tuple);
+        trie.add(tuple2);
+        Iterator iter = trie.wordsWithPrefix(pref).iterator();
+        assertEquals(true, iter.hasNext());
+        assertEquals("vas", iter.next());
+        assertEquals(true, iter.hasNext());
+        assertEquals("vasilisa", iter.next());
+        assertEquals(false, iter.hasNext());
+        assertEquals(null, iter.next());
+    }
+    
+    /**
+     * Test of wordsWithPrefix method with null argument, of class RVTrie.
+     */
+    @Test
+    public void testWordsWithNullPrefix() {
+        System.out.println("wordsWithPrefix");
+        Tuple tuple = new Tuple("vasilisa");
+        Tuple tuple2 = new Tuple("vas");
+        String pref = null;
+        trie = new RVTrie();
+        trie.add(tuple);
+        trie.add(tuple2);
+        Iterator iter = trie.wordsWithPrefix(pref).iterator();
+        assertEquals(false, iter.hasNext());
+        assertEquals(null, iter.next());
+    }
+    
+    /**
+     * Test of wordsWithPrefix method wich must return no words, of class RVTrie.
+     */
+    @Test
+    public void testWordsWithPrefixReturnNoWords() {
+        System.out.println("wordsWithPrefix");
+        Tuple tuple = new Tuple("vasilisa");
+        Tuple tuple2 = new Tuple("vas");
+        String pref = "fur";
+        trie = new RVTrie();
+        trie.add(tuple);
+        trie.add(tuple2);
+        Iterator iter = trie.wordsWithPrefix(pref).iterator();
+        assertEquals(false, iter.hasNext());
+        assertEquals(null, iter.next());
     }
 
     /**
-     * Test of size method, of class MyTrie.
+     * Test of size method, of class RVTrie.
      */
     @Test
     public void testSize() {
         System.out.println("size");
-        trie = new MyTrie();
-        List<String> strFromFile = new ArrayList<String>();
-        try {
-            Scanner in = new Scanner(new File("src\\test\\resources\\words-333333.txt"));
-            int subStringPosition = 15; // for given file
-            while (in.hasNext()) {
-                String word = in.nextLine().substring(subStringPosition);
-                trie.add(new Tuple(word));
-                strFromFile.add(word);
-            }
-            in.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("file for test is not found");
-        }
-        int expected = strFromFile.size();
+        Tuple tuple = new Tuple("vasilisa");
+        Tuple tuple1 = new Tuple("vasiliy");
+        Tuple tuple2 = new Tuple("vas");
+        Tuple tuple3 = new Tuple("vasiliy");
+        int expected = 3;
+        trie = new RVTrie();
+        trie.add(tuple);
+        trie.add(tuple1);
+        trie.add(tuple2);
+        trie.add(tuple3);
+        assertEquals(expected, trie.size());
+    }
+
+    /**
+     * Test of size method with empty trie, of class RVTrie.
+     */
+    @Test
+    public void testEmptySize() {
+        System.out.println("size");
+        int expected = 0;
+        trie = new RVTrie();
         assertEquals(expected, trie.size());
     }
 }
