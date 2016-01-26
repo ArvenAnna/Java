@@ -5,7 +5,6 @@
  */
 package anna.deliveryservice.service;
 
-import anna.deliveryservice.configuration.ServiceLocator;
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.domain.Order;
 import anna.deliveryservice.domain.Pizza;
@@ -19,12 +18,15 @@ import java.util.List;
  */
 public class SimpleOrderService implements OrderService {
     
-    private ServiceLocator serviceLocator = ServiceLocator.getInstance();
-    
     private static int orderCount = 0;
 
-    private OrderRepository orderRepository = serviceLocator.createImplementation("orderRepository");
-    private PizzaService pizzaService = serviceLocator.createImplementation("pizzaService");
+    private OrderRepository orderRepository;
+    private PizzaService pizzaService;
+    
+    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService){
+        this.orderRepository = orderRepository;
+        this.pizzaService = pizzaService;   
+    }
     
     @Override
     public Order placeNewOrder(Customer customer, int ... pizzaID){
@@ -44,7 +46,11 @@ public class SimpleOrderService implements OrderService {
         orderRepository.save(order);
     }
     
-    private Pizza getPizzaById(Integer id){
+    private Pizza getPizzaById(Integer id){  
         return pizzaService.find(id);
+    }
+    
+    public void init(){
+        
     }
 }

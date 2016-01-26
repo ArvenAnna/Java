@@ -5,7 +5,7 @@
  */
 package anna.deliveryservice.service;
 
-import anna.deliveryservice.configuration.ServiceLocator;
+import anna.deliveryservice.infrastructure.ServiceLocator;
 import anna.deliveryservice.domain.Pizza;
 import anna.deliveryservice.repository.PizzaRepository;
 
@@ -15,12 +15,30 @@ import anna.deliveryservice.repository.PizzaRepository;
  */
 public class SimplePizzaService implements PizzaService{
     
-    private ServiceLocator serviceLocator = ServiceLocator.getInstance();
+//    private ServiceLocator serviceLocator = ServiceLocator.getInstance();
+//    
+//    private PizzaRepository pizzaRepository = serviceLocator.createImplementation("pizzaRepository");
+//
+//    @Override
+//    public Pizza find(Integer id) {
+//        return pizzaRepository.find(id);
+//    }  
     
-    private PizzaRepository pizzaRepository = serviceLocator.createImplementation("pizzaRepository");
+    //private ServiceLocator serviceLocator = ServiceLocator.getInstance();
+    
+    private PizzaRepository pizzaRepository;
+    
+    public SimplePizzaService(PizzaRepository pizzaRepository){
+        this.pizzaRepository = pizzaRepository;
+    }
 
     @Override
     public Pizza find(Integer id) {
         return pizzaRepository.find(id);
-    }    
+    } 
+    
+    public void init(){
+    }
 }
+//роберт мартин "Чистый код"
+//разница межд иос и ди martinfowler.com/articles/injection.html#ServiceLocatorVsD
