@@ -5,6 +5,7 @@
  */
 package anna.deliveryservice.service;
 
+import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.domain.Order;
 import anna.deliveryservice.domain.Pizza;
@@ -29,6 +30,7 @@ public class SimpleOrderService implements OrderService {
     }
     
     @Override
+    @BanchMark
     public Order placeNewOrder(Customer customer, int ... pizzaID){
         orderCount++;
         List<Pizza> pizzas = new ArrayList<Pizza>();

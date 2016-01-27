@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import anna.deliveryservice.proxy.BanchMarkProxy;
 
 /**
  *
@@ -35,8 +36,8 @@ public class JavaConfigApplicationContext implements ApplicationContext {
 
         BeanBuilder builder = new BeanBuilder(type);
         builder.construct();
-        builder.afterConstruct();
         builder.createProxy();
+        builder.afterConstruct();
         bean = builder.build();
 
         beans.put(beanName, bean);
@@ -66,7 +67,6 @@ public class JavaConfigApplicationContext implements ApplicationContext {
                     StringBuilder str = new StringBuilder(name);
                     str.setCharAt(0, String.valueOf(str.charAt(0)).toLowerCase().toCharArray()[0]);
                     name = new String(str);
-                    //params[i] = parameters[i].cast(getBean(name)); 
                     params[i] = getBean(name);
                 }
                 bean = constructor.newInstance(params);
@@ -74,8 +74,8 @@ public class JavaConfigApplicationContext implements ApplicationContext {
         }
 
         public void afterConstruct() throws Exception {
-            //Class<?> clazz = bean.getClass();
-            Method[] methods = type.getMethods();
+            Class<?> presiceType = bean.getClass();
+            Method[] methods = presiceType.getMethods();
 
             for (Method method : methods) {
 
@@ -88,16 +88,16 @@ public class JavaConfigApplicationContext implements ApplicationContext {
                         method.invoke(bean);
                     }
                 }
-
             }
         }
 
         public void createProxy() {
-
-        }
-
+            BanchMarkProxy banchMark = new BanchMarkProxy(bean);
+            bean = banchMark.getProxy();
+        } 
+        
         public Object build() {
             return bean;
         }
-    }
+    } 
 }

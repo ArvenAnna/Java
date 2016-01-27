@@ -5,6 +5,7 @@
  */
 package anna.deliveryservice.repository;
 
+import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.annotation.PostCreate;
 import anna.deliveryservice.domain.Pizza;
 import java.util.HashMap;
@@ -19,13 +20,13 @@ public class InMemPizzaRepository implements PizzaRepository{
     private final Map<Integer, Pizza> pizzas = new HashMap<>();
 
     @Override
+    @BanchMark
     public Pizza find(Integer id) {
         return pizzas.get(id);
     }
     
     @PostCreate
     public void init(){
-        System.out.println("This is init");
         pizzas.put(1, new Pizza(1,"Sea", Pizza.PizzaType.Meat, 25));
         pizzas.put(2, new Pizza(2,"Sea", Pizza.PizzaType.Sea, 40));
         pizzas.put(3, new Pizza(3,"Sea", Pizza.PizzaType.Vegetarian, 30));
