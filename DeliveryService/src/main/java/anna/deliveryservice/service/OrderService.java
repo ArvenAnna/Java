@@ -18,4 +18,9 @@ public interface OrderService {
 
     void saveOrder(Order order);
     
+    Order addPizzasToOrder(int orderId, int... pizzaID);
+    
+    Integer getOrderCost(Order order);
+    
+    void payForOrder(Order order);
 }

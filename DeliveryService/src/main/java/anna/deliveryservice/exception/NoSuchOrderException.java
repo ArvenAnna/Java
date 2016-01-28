@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package anna.deliveryservice.repository;
-
-import anna.deliveryservice.domain.Order;
+package anna.deliveryservice.exception;
 
 /**
  *
  * @author Alex
  */
-public interface OrderRepository {
-    Order save(Order order);
-    Order findById(int id);
-    Order update(Order order);
+public class NoSuchOrderException extends RuntimeException{
+
+    public NoSuchOrderException() {
+        super();
+    }
+    
 }

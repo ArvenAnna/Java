@@ -8,6 +8,7 @@ package anna.deliveryservice.infrastructure;
 import anna.deliveryservice.repository.InMemCustomerRepository;
 import anna.deliveryservice.repository.InMemOrderRepository;
 import anna.deliveryservice.repository.InMemPizzaRepository;
+import anna.deliveryservice.service.SimpleCustomerService;
 import anna.deliveryservice.service.SimpleOrderService;
 import anna.deliveryservice.service.SimplePizzaService;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class JavaConfig implements Config{
         ifc2Class.put("customerRepository", InMemCustomerRepository.class);
         ifc2Class.put("orderService", SimpleOrderService.class);
         ifc2Class.put("pizzaService", SimplePizzaService.class);
+        ifc2Class.put("customerService", SimpleCustomerService.class);
     }
     
     @Override

@@ -5,10 +5,13 @@
  */
 package anna.deliveryservice.repository;
 
+import anna.deliveryservice.domain.Customer;
+
 /**
  *
  * @author Alex
  */
 public interface CustomerRepository {
-    
+    Customer update(Customer customer);
+    Customer findById(int id);
 }

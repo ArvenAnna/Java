@@ -40,11 +40,20 @@ public class BanchMarkProxy {
         InvocationHandler handler = new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                Object returnValue;
-                System.out.println("BanchMark for method" + method.getName() + " of class " + realObject.getClass().getSimpleName());
-                long time = System.nanoTime();
-                returnValue = method.invoke(realObject, args);
-                System.out.println(System.nanoTime()- time);
+                Object returnValue = null;
+                Method[] realMethods = realObject.getClass().getMethods();
+                for (Method realMethod : realMethods) {
+                    if (realMethod.getName().equals(method.getName()) && realMethod.isAnnotationPresent(BanchMark.class)) {
+                        long time = System.nanoTime();
+                        returnValue = method.invoke(realObject, args);
+                        System.out.println("BanchMark for method" + method.getName() + " of class " + realObject.getClass().getSimpleName());
+                        System.out.println(System.nanoTime() - time);
+                        break;
+                    }
+                }
+                if (returnValue == null) {
+                    returnValue = method.invoke(realObject, args);
+                }
                 return returnValue;
             }
         };

@@ -5,8 +5,6 @@
  */
 package anna.deliveryservice.domain;
 
-import anna.deliveryservice.domain.Customer;
-import anna.deliveryservice.domain.Pizza;
 import java.util.List;
 
 /**
@@ -18,6 +16,7 @@ public class Order {
     private Integer id;
     private List<Pizza> pizzas;
     private Customer customer;
+    private Status status; 
     
     public Order() {
     }
@@ -56,10 +55,23 @@ public class Order {
         this.customer = customer;
     }
 
-    public Order(Integer id, List<Pizza> pizzas, Customer customer) {
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Order(Integer id, List<Pizza> pizzas, Customer customer, Status status) {
         this.id = id;
         this.pizzas = pizzas;
         this.customer = customer;
+        this.status = status;
+    }
+    
+    public enum Status {
+        NEW, IN_PROGRSS, CANCELED, DONE
     }
     
 }
