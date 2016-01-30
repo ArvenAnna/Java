@@ -13,9 +13,12 @@ import anna.deliveryservice.repository.CustomerRepository;
  *
  * @author Alex
  */
-public class SimpleCustomerService implements CustomerService{
-    
+public class SimpleCustomerService implements CustomerService {
+
     private CustomerRepository customerRepository;
+
+    public SimpleCustomerService() {
+    }
 
     public SimpleCustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -23,21 +26,21 @@ public class SimpleCustomerService implements CustomerService{
 
     @Override
     public void giveCard(Customer customer) {
-        if(customerRepository.findById(customer.getId())!=null){
+        if (customerRepository.findById(customer.getId()) != null) {
             customer.setCard(0);
-        }else{
+        } else {
             throw new NoSuchCustomerException();
         }
         customerRepository.update(customer);
     }
 
     @Override
-    public Integer addSumToCard(Customer customer, int sum) {
-        if(customer.getCard()!=null){
-            customer.setCard(customer.getCard() + sum);
-            customerRepository.update(customer);
-            return customer.getCard();
-        }else return null;   
+    public Customer addSumToCard(Customer customer, int sum) {
+        customer.addSumToCard(sum);
+        return customerRepository.update(customer);
     }
-    
+
+    public Customer createCustomer(String name) {
+        return new Customer(3, name);
+    }
 }

@@ -26,7 +26,8 @@ public class SimpleOrderService implements OrderService {
     private OrderRepository orderRepository;
     private PizzaService pizzaService;
     private CustomerService customerService;
-    private final int MAX_PIZZAS_IN_ORDER = 10;
+    
+    private Order order;
 
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService, CustomerService customerService) {
         this.orderRepository = orderRepository;
@@ -34,13 +35,17 @@ public class SimpleOrderService implements OrderService {
         this.customerService = customerService;
     }
 
-    @Override
-    @BanchMark
-    public Order placeNewOrder(Customer customer, int... pizzaID) {
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
-        if (pizzaID.length > MAX_PIZZAS_IN_ORDER) {
-            throw createTooManyPizzaException();
-        }
+    public Order getOrder() {
+        return order;
+    }
+
+    @Override
+    //@BanchMark
+    public Order placeNewOrder(Customer customer, int... pizzaID) {
         orderCount++;
         List<Pizza> pizzas = new ArrayList<Pizza>();
 
@@ -64,81 +69,28 @@ public class SimpleOrderService implements OrderService {
         if (order == null) {
             throw new NoSuchOrderException();
         }
-        if ((pizzaID.length + order.getPizzas().size()) > MAX_PIZZAS_IN_ORDER) {
-            throw createTooManyPizzaException();
-        }
 
         List<Pizza> pizzas = new ArrayList<Pizza>();
-
-        pizzas.addAll(order.getPizzas());
         for (Integer id : pizzaID) {
             pizzas.add(getPizzaById(id));
         }
-
-        Order newOrder = new Order(order.getId(), pizzas, order.getCustomer(), Order.Status.IN_PROGRSS);
-
-        return orderRepository.update(newOrder);
-    }
-
-    @Override
-    public Integer getOrderCost(Order order) {
-        Integer sum = 0;
-        for (Pizza pizza : order.getPizzas()) {
-            sum += pizza.getPrice();
-        }
-        return setCardRate(setRate(sum, order), order);
+        
+        order.addMorePizzaz(pizzas);
+        order.setStatus(Order.Status.IN_PROGRSS);
+        return orderRepository.update(order);
     }
     
     @Override
     public void payForOrder(Order order){
-        Integer sum = getOrderCost(order);
         order.setStatus(Order.Status.DONE);
         orderRepository.update(order);
         if(order.getCustomer().getCard()!=null){
-            customerService.addSumToCard(order.getCustomer(), sum);
-        }
-         
-    }
-    
-    private Integer setCardRate(int cost, Order order){
-        int resultCost = cost;
-        Integer cardSum = order.getCustomer().getCard();
-        if(cardSum!=null){
-            int cardRate = cardSum*10/100;
-            if(cardRate>cost*30/100){
-                cardRate = cost*30/100;
-            }  
-            resultCost = resultCost - cardRate;
-        }
-        return resultCost;
-    }
-
-    private Integer setRate(int cost, Order order) {
-        int resultCost = cost;
-        if (order.getPizzas().size() > 4) {
-            int max = 0;
-            for (Pizza pizza : order.getPizzas()) {
-                if(max < pizza.getPrice()){
-                    max = pizza.getPrice();
-                }
-            }   
-            resultCost = resultCost-max;
-            resultCost = resultCost + (max*30/100);
-        }
-        return resultCost;
+            customerService.addSumToCard(order.getCustomer(), order.getCost());
+        }     
     }
 
     private Pizza getPizzaById(Integer id) {
         return pizzaService.find(id);
-    }
-
-    private TooManyPizzasException createTooManyPizzaException() {
-        return new TooManyPizzasException() {
-            @Override
-            public String getMessage() {
-                return "Order can't has more then " + MAX_PIZZAS_IN_ORDER + " pizzas";
-            }
-        };
     }
 
     public void init() {

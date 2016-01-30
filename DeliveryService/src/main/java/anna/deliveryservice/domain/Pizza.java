@@ -26,6 +26,14 @@ public class Pizza {
         this.price = price;
     }
 
+    public Pizza(Integer id, String name, PizzaType pizzaType) {
+        this.id = id;
+        this.name = name;
+        this.pizzaType = pizzaType;
+    }
+    
+    
+
     public Integer getPrice() {
         return price;
     }

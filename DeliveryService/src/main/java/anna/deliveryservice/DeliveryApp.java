@@ -21,20 +21,7 @@ import anna.deliveryservice.service.OrderService;
 public class DeliveryApp {
     public static void main(String[] args) throws Exception{
         ApplicationContext context = new JavaConfigApplicationContext(new JavaConfig());
-        Customer customer = new Customer(1,"Vasiliy","street 34");
-        customer.setCard(0);
-        Order order;
         OrderService orderService = (OrderService)context.getBean("orderService");
-        order = orderService.placeNewOrder(customer, 1,2,3);
-        System.out.println(order);
-        System.out.println("------------------------");
-        order = orderService.addPizzasToOrder(1, 2,3);
-        System.out.println(order);
-        System.out.println(orderService.getOrderCost(order));
-        orderService.payForOrder(order);
-        
-        order = orderService.placeNewOrder(customer, 2);
-        System.out.println(order);
-        System.out.println(orderService.getOrderCost(order));
+        //order = orderService.placeNewOrder(customer, 1,1,1);
     }
 }

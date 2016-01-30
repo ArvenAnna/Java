@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <bean id = "pizzaRepo" class="anna.deliveryservice.repository.InMemPizzaRepository"
+          init-method="init">
+        <property name="pizzas">
+            <map>
+                <entry key="1">
+                    <bean class="anna.deliveryservice.domain.Pizza">
+                        <constructor-arg value="1"/>
+                        <constructor-arg value="Sea"/>
+                        <constructor-arg value="Sea"/>   
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id = "orderRepo" class="anna.deliveryservice.repository.InMemOrderRepository"/>
+    <bean id = "customerRepo" class="anna.deliveryservice.repository.InMemCustomerRepository"/>
+    
+<!--    <bean name="newCustomer" class="anna.deliveryservice.domain.Customer">
+        <constructor-arg value="Nick"></constructor-arg>
+        <property name="address" value="Kiev"></property>
+    </bean>-->
+    
+</beans>

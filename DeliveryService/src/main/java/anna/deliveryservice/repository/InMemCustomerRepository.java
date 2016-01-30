@@ -40,8 +40,8 @@ public class InMemCustomerRepository implements CustomerRepository{
     }
     
     public void init(){
-       customers.add(new Customer(1,"Vasiliy","street 34"));
-       customers.add(new Customer(2,"dddd","123e wrw"));
+       customers.add(new Customer(1,"Vasiliy"));
+       customers.add(new Customer(2,"dddd"));
     }
     
 }

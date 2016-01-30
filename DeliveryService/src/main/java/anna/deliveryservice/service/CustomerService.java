@@ -13,5 +13,6 @@ import anna.deliveryservice.domain.Customer;
  */
 public interface CustomerService {
     void giveCard(Customer customer);
-    Integer addSumToCard(Customer customer, int sum);
+    Customer addSumToCard(Customer customer, int sum);
+    Customer createCustomer(String name);
 }

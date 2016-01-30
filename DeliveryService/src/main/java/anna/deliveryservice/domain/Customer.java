@@ -13,16 +13,25 @@ public class Customer {
     
     private Integer id;
     private String name;
-    private String address;
+    private Address address;
     private Integer card;
     
     public Customer() {
     }
 
-    public Customer(Integer id, String name, String address) {
+    public Customer(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.address = address;
+    }
+
+    public Customer(String name) {
+        this.name = name;
+    }
+    
+    public void addSumToCard(int sum){
+        if(card != null){
+            card = card + sum;
+        }  
     }
 
     public Integer getCard() {
@@ -40,10 +49,17 @@ public class Customer {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", name=" + name + '}';
-    }     
+        return "Customer{" + "id=" + id + ", name=" + name + ", address=" + address + ", card=" + card + '}';
+    }    
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <bean id = "pizzaServ" class="anna.deliveryservice.service.SimplePizzaService"
+    init-method="init">
+        <constructor-arg ref="pizzaRepo"/>                        
+    </bean>
+    <bean id = "orderServ" class="anna.deliveryservice.service.SimpleOrderService">
+        <constructor-arg index="0" ref="orderRepo">
+            <!--<ref parent="bean_name"/> instead of ref - from parent?>-->
+        </constructor-arg>
+   
+
+        <constructor-arg index="1" ref="pizzaServ"/>
+        <constructor-arg index="2" ref="customerServ"/>
+        <property name="order">
+            <bean class="anna.deliveryservice.domain.Order" scope="prototype"/>
+        </property>
+    </bean>
+    <bean id = "customerServ" class="anna.deliveryservice.service.SimpleCustomerService"/>
+    
+    <bean name= "customer" factory-bean="customerServ" factory-method="createCustomer">
+        <constructor-arg value="Andriy"/>
+    </bean>
+    
+<!--    <bean name="newCustomer" class="anna.deliveryservice.domain.Customer">
+        <constructor-arg value="And"></constructor-arg>
+        <property name="address" value="Kiev"></property>
+    </bean>-->
+    
+<!--    factory-methods of bean generation
+    <bean id = "customerService" class="anna.deliveryservice.service.SimpleCustomerService"/>
+    <bean name= "customer" factory-bean="customerService" factory-method="createCustomer"/>-->
+    
+    <bean name="newCustomer" class="anna.deliveryservice.domain.Customer" scope="prototype">
+        <constructor-arg value="And"></constructor-arg>
+        <property name="address">
+            <bean class="anna.deliveryservice.domain.Address" destroy-method="destroy" scope="singleton"><!--inner bean (address is separate class)-->
+                <constructor-arg value="Kiex"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+</beans>

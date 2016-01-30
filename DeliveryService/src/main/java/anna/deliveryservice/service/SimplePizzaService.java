@@ -15,17 +15,6 @@ import anna.deliveryservice.repository.PizzaRepository;
  */
 public class SimplePizzaService implements PizzaService{
     
-//    private ServiceLocator serviceLocator = ServiceLocator.getInstance();
-//    
-//    private PizzaRepository pizzaRepository = serviceLocator.createImplementation("pizzaRepository");
-//
-//    @Override
-//    public Pizza find(Integer id) {
-//        return pizzaRepository.find(id);
-//    }  
-    
-    //private ServiceLocator serviceLocator = ServiceLocator.getInstance();
-    
     private PizzaRepository pizzaRepository;
     
     public SimplePizzaService(PizzaRepository pizzaRepository){
@@ -40,5 +29,3 @@ public class SimplePizzaService implements PizzaService{
     public void init(){
     }
 }
-//роберт мартин "Чистый код"
-//разница межд иос и ди martinfowler.com/articles/injection.html#ServiceLocatorVsD

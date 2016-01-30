@@ -17,7 +17,11 @@ import java.util.Map;
  */
 public class InMemPizzaRepository implements PizzaRepository{
     
-    private final Map<Integer, Pizza> pizzas = new HashMap<>();
+    private Map<Integer, Pizza> pizzas;
+
+    public void setPizzas(Map<Integer, Pizza> pizzas) {
+        this.pizzas = pizzas;
+    } 
 
     @Override
     @BanchMark
@@ -27,8 +31,5 @@ public class InMemPizzaRepository implements PizzaRepository{
     
     @PostCreate
     public void init(){
-        pizzas.put(1, new Pizza(1,"Meat", Pizza.PizzaType.Meat, 25));
-        pizzas.put(2, new Pizza(2,"Sea", Pizza.PizzaType.Sea, 40));
-        pizzas.put(3, new Pizza(3,"Vegetarian", Pizza.PizzaType.Vegetarian, 30));
     }
 }
