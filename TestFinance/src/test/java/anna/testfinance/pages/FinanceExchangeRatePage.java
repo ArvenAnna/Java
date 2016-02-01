@@ -48,11 +48,6 @@ public class FinanceExchangeRatePage extends PageObject {
 
         int extremeValue = 0;
         
-        System.out.println(columnLabel.get(columnLabel.size()-4).getText());
-        System.out.println(columnLabel.get(columnLabel.size()-3).getText());
-        System.out.println(columnLabel.get(columnLabel.size()-2).getText());
-        System.out.println(columnLabel.get(columnLabel.size()-1).getText());
-        
         for(int i = 4; i>0; i--){
                 if((columnLabel.get(columnLabel.size()-i).getText().equals("Максимальний"))
                         && (extreme.equals("maximal"))){
@@ -70,8 +65,7 @@ public class FinanceExchangeRatePage extends PageObject {
                         && (extreme.equals("optimal"))){
                     extremeValue = (int) (Double.parseDouble(column.get((column.size() - i)).getText()) * 10000);
                 }
-            }
-        System.out.println(extreme + extremeValue);
+        }
         return extremeValue;
     }
 
@@ -114,7 +108,6 @@ public class FinanceExchangeRatePage extends PageObject {
                 extremeValue = min;
             }
         }
-        System.out.println("Rozrahovane " + extremeValue);
         return extremeValue;
     }
 
