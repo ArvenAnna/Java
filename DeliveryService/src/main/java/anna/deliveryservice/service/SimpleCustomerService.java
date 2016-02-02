@@ -8,11 +8,14 @@ package anna.deliveryservice.service;
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.exception.NoSuchCustomerException;
 import anna.deliveryservice.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Alex
  */
+@Service
 public class SimpleCustomerService implements CustomerService {
 
     private CustomerRepository customerRepository;
@@ -20,6 +23,7 @@ public class SimpleCustomerService implements CustomerService {
     public SimpleCustomerService() {
     }
 
+    @Autowired
     public SimpleCustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }

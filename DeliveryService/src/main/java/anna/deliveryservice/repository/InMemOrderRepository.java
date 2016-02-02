@@ -8,11 +8,13 @@ package anna.deliveryservice.repository;
 import anna.deliveryservice.domain.Order;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Alex
  */
+@Repository
 public class InMemOrderRepository implements OrderRepository {
 
     private final List<Order> orders = new ArrayList<>();

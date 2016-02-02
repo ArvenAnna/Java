@@ -8,11 +8,13 @@ package anna.deliveryservice.repository;
 import anna.deliveryservice.domain.Customer;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Alex
  */
+@Repository
 public class InMemCustomerRepository implements CustomerRepository{
 
     private final List<Customer> customers = new ArrayList<Customer>();

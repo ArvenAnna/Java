@@ -5,15 +5,20 @@
  */
 package anna.deliveryservice.domain;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author Alex
  */
+@Component
 public class Customer {
     
     private Integer id;
     private String name;
     private Address address;
+    @Value("40")
     private Integer card;
     
     public Customer() {

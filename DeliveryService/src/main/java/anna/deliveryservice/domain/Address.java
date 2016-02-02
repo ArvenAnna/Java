@@ -5,19 +5,29 @@
  */
 package anna.deliveryservice.domain;
 
+import javax.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author Alex
  */
+@Component
 public class Address {
-    
+
+    @Value("Kiev")
     private String city;
 
-        public Address(String city) {
-            this.city = city;
-        }
-        
-        public void destroy(){
-            System.out.println("Destroy Address");
-        }
+    public Address() {
+    }
+
+    public Address(String city) {
+        this.city = city;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        System.out.println("Destroy Address");
+    }
 }

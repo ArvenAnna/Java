@@ -5,30 +5,31 @@
  */
 package anna.deliveryservice.service;
 
-import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.domain.Order;
 import anna.deliveryservice.domain.Pizza;
 import anna.deliveryservice.exception.NoSuchOrderException;
-import anna.deliveryservice.exception.TooManyPizzasException;
 import anna.deliveryservice.repository.OrderRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Alex
  */
-public class SimpleOrderService implements OrderService {
+public abstract class SimpleOrderService implements OrderService{
 
     private static int orderCount = 0;
 
     private OrderRepository orderRepository;
     private PizzaService pizzaService;
     private CustomerService customerService;
+    //private ApplicationContext appContext;
     
     private Order order;
 
+    @Autowired
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService, CustomerService customerService) {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
@@ -43,8 +44,8 @@ public class SimpleOrderService implements OrderService {
         return order;
     }
 
+
     @Override
-    //@BanchMark
     public Order placeNewOrder(Customer customer, int... pizzaID) {
         orderCount++;
         List<Pizza> pizzas = new ArrayList<Pizza>();
@@ -52,11 +53,23 @@ public class SimpleOrderService implements OrderService {
         for (Integer id : pizzaID) {
             pizzas.add(getPizzaById(id));
         }
-
-        Order newOrder = new Order(orderCount, pizzas, customer, Order.Status.NEW);
+        Order newOrder = createNewOrder();
+        newOrder.setCustomer(customer);
+        newOrder.setPizzas(pizzas);
+        newOrder.setId(orderCount);
+        newOrder.setStatus(Order.Status.NEW);
+        
         saveOrder(newOrder);
         return newOrder;
     }
+    
+    
+    abstract Order createNewOrder();
+    
+//    abstract Order createNewOrder();
+//    {
+//        return (Order)appContext.getBean("order");
+//    }
 
     @Override
     public void saveOrder(Order order) {
@@ -85,7 +98,7 @@ public class SimpleOrderService implements OrderService {
         order.setStatus(Order.Status.DONE);
         orderRepository.update(order);
         if(order.getCustomer().getCard()!=null){
-            customerService.addSumToCard(order.getCustomer(), order.getCost());
+            customerService.addSumToCard(order.getCustomer(), order.getpureCost());
         }     
     }
 

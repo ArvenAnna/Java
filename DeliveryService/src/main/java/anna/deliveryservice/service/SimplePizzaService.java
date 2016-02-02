@@ -5,18 +5,22 @@
  */
 package anna.deliveryservice.service;
 
-import anna.deliveryservice.infrastructure.ServiceLocator;
 import anna.deliveryservice.domain.Pizza;
 import anna.deliveryservice.repository.PizzaRepository;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Alex
  */
+@Service
 public class SimplePizzaService implements PizzaService{
     
     private PizzaRepository pizzaRepository;
     
+    @Autowired
     public SimplePizzaService(PizzaRepository pizzaRepository){
         this.pizzaRepository = pizzaRepository;
     }
@@ -26,6 +30,8 @@ public class SimplePizzaService implements PizzaService{
         return pizzaRepository.find(id);
     } 
     
+    @PostConstruct
     public void init(){
+        System.out.println("I'm postconstruct");
     }
 }

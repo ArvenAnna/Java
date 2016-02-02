@@ -19,6 +19,7 @@ public class Order {
     private Customer customer;
     private Status status;
     private final int MAX_PIZZAS_IN_ORDER = 10;
+    private List<Rate> rates;
 
     public Order() {
     }
@@ -42,40 +43,22 @@ public class Order {
         pizzas.addAll(morePizzas);
     }
 
-    public Integer getCost() {
+    public Integer getpureCost() {
         Integer sum = 0;
         for (Pizza pizza : pizzas) {
             sum += pizza.getPrice();
         }
-        return setCardRate(setRate(sum));
+        return sum;
     }
-
-    private Integer setCardRate(int cost) {
-        int resultCost = cost;
-        Integer cardSum = customer.getCard();
-        if (cardSum != null) {
-            int cardRate = cardSum * 10 / 100;
-            if (cardRate > cost * 30 / 100) {
-                cardRate = cost * 30 / 100;
+    
+    public Integer getRateCost() {
+        Integer cost = getpureCost();
+        if(rates != null){
+            for(Rate rate:rates){
+                cost = cost - rate.addRate(this);
             }
-            resultCost = resultCost - cardRate;
         }
-        return resultCost;
-    }
-
-    private Integer setRate(int cost) {
-        int resultCost = cost;
-        if (pizzas.size() > 4) {
-            int max = 0;
-            for (Pizza pizza : pizzas) {
-                if (max < pizza.getPrice()) {
-                    max = pizza.getPrice();
-                }
-            }
-            resultCost = resultCost - max;
-            resultCost = resultCost + (max * 30 / 100);
-        }
-        return resultCost;
+        return cost;
     }
 
     private void checkForTooManyPizzasException(Integer pizzaCount) {
@@ -91,6 +74,14 @@ public class Order {
 
     public Integer getId() {
         return id;
+    }
+
+    public List<Rate> getRates() {
+        return rates;
+    }
+
+    public void setRates(List<Rate> rates) {
+        this.rates = rates;     
     }
 
     public void setId(Integer id) {
@@ -128,6 +119,10 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", pizzas=" + pizzas + ", customer=" + customer + '}';
+        return "Order{" + "id=" + id + ", pizzas=" + pizzas + ", customer=" + 
+                customer + ", status=" + status + ", MAX_PIZZAS_IN_ORDER=" + 
+                MAX_PIZZAS_IN_ORDER + ", rates=" + rates + '}';
     }
+
+    
 }
