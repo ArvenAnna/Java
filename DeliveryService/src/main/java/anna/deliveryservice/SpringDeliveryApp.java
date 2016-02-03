@@ -7,8 +7,16 @@ package anna.deliveryservice;
 
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.domain.Order;
+import anna.deliveryservice.domain.Pizza;
+import anna.deliveryservice.listener.AddingPizzasEvent;
+import anna.deliveryservice.repository.InMemPizzaRepository;
+import anna.deliveryservice.repository.PizzaRepository;
 import anna.deliveryservice.service.OrderService;
+import anna.deliveryservice.service.SimpleOrderService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -26,6 +34,8 @@ public class SpringDeliveryApp {
         ConfigurableApplicationContext appContext = 
                 new ClassPathXmlApplicationContext(new String[]{"appContext.xml"}, repositoryContext);
         
+        
+        
         for(String name: appContext.getBeanDefinitionNames()){
             System.out.println(name);
         }
@@ -35,14 +45,22 @@ public class SpringDeliveryApp {
         
         Customer c = appContext.getBean(Customer.class);
         
-        OrderService orderService = (OrderService)appContext.getBean("orderServ");
+        OrderService orderService = (OrderService)appContext.getBean(SimpleOrderService.class);
         Order order = orderService.placeNewOrder(c, 1,1,1,1,1);
-        System.out.println(order);
         
+        System.out.println(order);
         System.out.println(order.getRateCost());
+        
+        List<Pizza> addPizzas = new ArrayList<Pizza>();
+        PizzaRepository prep = (PizzaRepository)appContext.getBean("pizzaRepo");
+        addPizzas.add(prep.find(2));
+        order.addMorePizzaz(addPizzas);
+        System.out.println(order);
+        appContext.publishEvent(new AddingPizzasEvent(appContext,"pizzas were added"));
+        
+        
+        System.out.println(appContext.getBean("newCustomer"));
  
-        //PizzaRepository pizzaRepository = (PizzaRepository)appContext.getBean("pizzaRepo");
-        //System.out.println(pizzaRepository.find(1));
         repositoryContext.close();
         appContext.close();
     }

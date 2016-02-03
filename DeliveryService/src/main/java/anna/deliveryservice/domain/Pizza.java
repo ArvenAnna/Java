@@ -5,6 +5,8 @@
  */
 package anna.deliveryservice.domain;
 
+import javax.annotation.PostConstruct;
+
 /**
  *
  * @author Alex
@@ -52,6 +54,5 @@ public class Pizza {
     public String toString() {
         return "Pizza{" + "id=" + id + ", name=" + name + ", pizzaType=" + pizzaType + ", price=" + price + '}';
     }
-    
     
 }

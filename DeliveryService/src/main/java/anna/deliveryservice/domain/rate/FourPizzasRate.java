@@ -3,15 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package anna.deliveryservice.domain;
+package anna.deliveryservice.domain.rate;
 
+import anna.deliveryservice.annotation.MyComponent;
+import anna.deliveryservice.domain.Order;
+import anna.deliveryservice.domain.Order;
+import anna.deliveryservice.domain.Pizza;
+import anna.deliveryservice.domain.Pizza;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Alex
  */
-
+@MyComponent
 public class FourPizzasRate implements Rate{
 
     @Override

@@ -9,22 +9,32 @@
     <context:annotation-config/>
     <context:component-scan base-package="anna.deliveryservice.repository"/>
     
+    <bean class="anna.deliveryservice.infrastructure.BenchmarkBeanPostProcessor"/>
+    
     <bean id = "pizzaRepo" class="anna.deliveryservice.repository.InMemPizzaRepository">
         <property name="pizzas">
             <map>
                 <entry key="1">
-                    <bean class="anna.deliveryservice.domain.Pizza">
-                        <constructor-arg value="1"/>
-                        <constructor-arg value="Sea"/>
-                        <constructor-arg value="Sea"/>
-                        <constructor-arg value="50"/>   
+                    <bean name="pizzaFactoryBean" class="anna.deliveryservice.infrastructure.PizzaFactoryBean">
+                        <property name="id" value="1"/>
+                        <property name="name" value="Sea"/>
+                        <property name="type" value="Sea"/>
+                        <property name="price" value="50"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean name="pizzaFactoryBean" class="anna.deliveryservice.infrastructure.PizzaFactoryBean">
+                        <property name="id" value="2"/>
+                        <property name="name" value="Meat"/>
+                        <property name="type" value="Meat"/>
+                        <property name="price" value="60"/>
                     </bean>
                 </entry>
             </map>
         </property>
     </bean>
     
-<!--    <bean name="newCustomer" class="anna.deliveryservice.domain.Customer">
+    <!--    <bean name="newCustomer" class="anna.deliveryservice.domain.Customer">
         <constructor-arg value="Nick"></constructor-arg>
         <property name="address" value="Kiev"></property>
     </bean>-->

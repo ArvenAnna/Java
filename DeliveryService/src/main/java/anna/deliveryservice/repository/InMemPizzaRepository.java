@@ -5,6 +5,7 @@
  */
 package anna.deliveryservice.repository;
 
+import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.domain.Pizza;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -24,11 +25,13 @@ public class InMemPizzaRepository implements PizzaRepository{
     } 
 
     @Override
+    @BanchMark
     public Pizza find(Integer id) {
         return pizzas.get(id);
     }
     
     @PostConstruct
     public void init(){
+        System.out.println("iniiiiiiiiiiiiiiiiiiit");
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Alex
  */
-@Component
+//@Component
 public class Customer {
     
     private Integer id;

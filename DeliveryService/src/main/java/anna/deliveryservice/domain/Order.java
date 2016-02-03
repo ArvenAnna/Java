@@ -5,13 +5,17 @@
  */
 package anna.deliveryservice.domain;
 
+import anna.deliveryservice.domain.rate.Rate;
 import anna.deliveryservice.exception.TooManyPizzasException;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Alex
  */
+@Component
 public class Order {
 
     private Integer id;
@@ -19,6 +23,7 @@ public class Order {
     private Customer customer;
     private Status status;
     private final int MAX_PIZZAS_IN_ORDER = 10;
+    @Autowired
     private List<Rate> rates;
 
     public Order() {

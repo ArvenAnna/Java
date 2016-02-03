@@ -13,12 +13,16 @@ import anna.deliveryservice.repository.OrderRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Alex
  */
-public abstract class SimpleOrderService implements OrderService{
+
+@Service
+public class SimpleOrderService implements OrderService{
 
     private static int orderCount = 0;
 
@@ -63,8 +67,10 @@ public abstract class SimpleOrderService implements OrderService{
         return newOrder;
     }
     
-    
-    abstract Order createNewOrder();
+    @Lookup()
+    Order createNewOrder(){
+        return null;
+    }
     
 //    abstract Order createNewOrder();
 //    {

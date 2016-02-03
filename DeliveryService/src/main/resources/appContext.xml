@@ -6,20 +6,20 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 ">
-    <context:annotation-config/>
+   
     <context:component-scan base-package="anna.deliveryservice.service"/>
-    <context:component-scan base-package="anna.deliveryservice.domain"/>
+    <context:component-scan base-package="anna.deliveryservice.domain">
+        <context:include-filter type="annotation" expression="anna.deliveryservice.annotation.MyComponent"/>
+    </context:component-scan>
     
-    <bean id ="orderServ" class="anna.deliveryservice.service.SimpleOrderService">   
-        <lookup-method name="createNewOrder" bean="order"></lookup-method>
+    <bean name="newCustomer" class="anna.deliveryservice.domain.Customer">
+        <constructor-arg value="Andriy"/>
     </bean>
-                
-    <bean name="order" class="anna.deliveryservice.domain.Order" scope="prototype">
-        <property name="rates">
-            <list>
-                <bean class="anna.deliveryservice.domain.FourPizzasRate"/>
-                <bean class="anna.deliveryservice.domain.CardRate"/>
-            </list>  
-        </property>
-    </bean>
+    
+    <bean class="anna.deliveryservice.infrastructure.CustomBeanFactoryPostProcessor"></bean>
+    
+    <bean id="AddingPizzasEventListener" class="anna.deliveryservice.listener.AddingPizzasListener"/> 
+    
 </beans>
+
+<!--//company.-->
