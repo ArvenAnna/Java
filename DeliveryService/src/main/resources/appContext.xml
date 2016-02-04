@@ -12,6 +12,9 @@
         <context:include-filter type="annotation" expression="anna.deliveryservice.annotation.MyComponent"/>
     </context:component-scan>
     
+ <bean class="anna.deliveryservice.infrastructure.BenchmarkBeanPostProcessor"/>
+
+    
     <bean name="newCustomer" class="anna.deliveryservice.domain.Customer">
         <constructor-arg value="Andriy"/>
     </bean>

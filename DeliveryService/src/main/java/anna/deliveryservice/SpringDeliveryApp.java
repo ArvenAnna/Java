@@ -35,17 +35,19 @@ public class SpringDeliveryApp {
                 new ClassPathXmlApplicationContext(new String[]{"appContext.xml"}, repositoryContext);
         
         
-        
+        System.out.println("Beans in context --------");
         for(String name: appContext.getBeanDefinitionNames()){
             System.out.println(name);
         }
+        System.out.println("Beans in context --------");
         
         ApplicationContext parent = appContext.getParent();
         System.out.println(parent);
         
         Customer c = appContext.getBean(Customer.class);
+  
         
-        OrderService orderService = (OrderService)appContext.getBean(SimpleOrderService.class);
+        OrderService orderService = appContext.getBean(OrderService.class);
         Order order = orderService.placeNewOrder(c, 1,1,1,1,1);
         
         System.out.println(order);

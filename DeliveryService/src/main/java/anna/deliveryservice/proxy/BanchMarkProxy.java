@@ -34,8 +34,15 @@ public class BanchMarkProxy {
     }
 
     private Object createProxy() {
-        Class<?>[] interfaceTypes = realObject.getClass().getInterfaces();
-        System.out.println("Proxy for " + realObject.getClass());
+
+        Class<?> proxyType = realObject.getClass();
+        
+        for (Class<?> c : proxyType.getInterfaces()) {
+            if (c.getName().equals("org.springframework.cglib.proxy.Factory")) {
+                proxyType = proxyType.getSuperclass();
+                break;
+            }
+        }
 
         InvocationHandler handler = new InvocationHandler() {
             @Override
@@ -46,7 +53,7 @@ public class BanchMarkProxy {
                     if (realMethod.getName().equals(method.getName()) && realMethod.isAnnotationPresent(BanchMark.class)) {
                         long time = System.nanoTime();
                         returnValue = method.invoke(realObject, args);
-                        System.out.println("BanchMark for method" + method.getName() + " of class " + realObject.getClass().getSimpleName());
+                        System.out.println("BanchMark for method " + method.getName() + " of class " + realObject.getClass().getSimpleName());
                         System.out.println(System.nanoTime() - time);
                         break;
                     }
@@ -56,7 +63,7 @@ public class BanchMarkProxy {
                 }
                 return returnValue;
             }
-        };
-        return interfaceTypes[0].cast(Proxy.newProxyInstance(interfaceTypes[0].getClassLoader(), new Class[]{interfaceTypes[0]}, handler));
+        };    
+        return Proxy.newProxyInstance(proxyType.getClassLoader(), proxyType.getInterfaces(), handler);
     }
 }

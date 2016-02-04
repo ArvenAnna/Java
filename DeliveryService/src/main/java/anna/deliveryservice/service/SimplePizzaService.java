@@ -5,6 +5,7 @@
  */
 package anna.deliveryservice.service;
 
+import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.domain.Pizza;
 import anna.deliveryservice.repository.PizzaRepository;
 import javax.annotation.PostConstruct;
@@ -26,6 +27,7 @@ public class SimplePizzaService implements PizzaService{
     }
 
     @Override
+    @BanchMark
     public Pizza find(Integer id) {
         return pizzaRepository.find(id);
     } 

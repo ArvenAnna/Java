@@ -5,7 +5,11 @@
  */
 package anna.deliveryservice.infrastructure;
 
+import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.proxy.BanchMarkProxy;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
@@ -18,16 +22,15 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor{
 
     @Override
     public Object postProcessBeforeInitialization(Object o, String string) throws BeansException {
-        //before calling init methods
-        System.out.println("Before: " + string);
+        System.out.println("Before: " + o.getClass().getSimpleName());
         return o;
     }
 
     @Override
-    public Object postProcessAfterInitialization(Object o, String string) throws BeansException {
+    public Object postProcessAfterInitialization(final Object o, String string) throws BeansException {
         BanchMarkProxy banchMark = new BanchMarkProxy(o);
         System.out.println("After: " + string);
         return banchMark.getProxy();
     }
-    
+             
 }

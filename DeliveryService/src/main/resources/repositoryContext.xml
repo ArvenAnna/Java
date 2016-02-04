@@ -9,8 +9,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="anna.deliveryservice.repository"/>
     
-    <bean class="anna.deliveryservice.infrastructure.BenchmarkBeanPostProcessor"/>
-    
+     
     <bean id = "pizzaRepo" class="anna.deliveryservice.repository.InMemPizzaRepository">
         <property name="pizzas">
             <map>
