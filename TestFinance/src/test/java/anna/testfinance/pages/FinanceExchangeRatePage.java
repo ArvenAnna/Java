@@ -13,10 +13,6 @@ import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-/**
- *
- * @author Alex
- */
 @DefaultUrl("http://finance.i.ua")
 public class FinanceExchangeRatePage extends PageObject {
 
