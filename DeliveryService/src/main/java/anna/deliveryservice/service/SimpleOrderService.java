@@ -8,6 +8,7 @@ package anna.deliveryservice.service;
 import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.domain.Order;
+import anna.deliveryservice.domain.OrderDetail;
 import anna.deliveryservice.domain.Pizza;
 import anna.deliveryservice.exception.NoSuchOrderException;
 import anna.deliveryservice.repository.OrderRepository;
@@ -61,7 +62,8 @@ public class SimpleOrderService implements OrderService{
         }
         Order newOrder = createNewOrder();
         newOrder.setCustomer(customer);
-        newOrder.setPizzas(pizzas);
+        //OrderDetail details = null;
+        //newOrder.setDetails(details);
         newOrder.setId(orderCount);
         newOrder.setStatus(Order.Status.NEW);
         

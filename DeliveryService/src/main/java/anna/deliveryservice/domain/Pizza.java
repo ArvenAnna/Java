@@ -6,17 +6,38 @@
 package anna.deliveryservice.domain;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
- * @author Alex
+ * 
  */
-public class Pizza {
 
-    private Integer id;
-    private String name;
-    private PizzaType pizzaType;
-    private Integer price;
+@Entity 
+@Table(name = "pizza")
+public class Pizza {
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false) 
+    long id;
+    
+    @Column(name = "name")
+    String name;
+    
+    @Column(name = "pizzatype")
+    @Enumerated(EnumType.STRING)
+    PizzaType pizzaType;
+    
+    @Column(name = "price")
+    Integer price;
 
     public Pizza() {
     }
@@ -31,6 +52,30 @@ public class Pizza {
     public Pizza(Integer id, String name, PizzaType pizzaType) {
         this.id = id;
         this.name = name;
+        this.pizzaType = pizzaType;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public PizzaType getPizzaType() {
+        return pizzaType;
+    }
+
+    public void setPizzaType(PizzaType pizzaType) {
         this.pizzaType = pizzaType;
     }
     

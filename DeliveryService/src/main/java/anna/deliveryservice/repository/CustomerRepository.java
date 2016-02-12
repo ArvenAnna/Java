@@ -13,5 +13,5 @@ import anna.deliveryservice.domain.Customer;
  */
 public interface CustomerRepository {
     Customer update(Customer customer);
-    Customer findById(int id);
+    Customer findById(long id);
 }

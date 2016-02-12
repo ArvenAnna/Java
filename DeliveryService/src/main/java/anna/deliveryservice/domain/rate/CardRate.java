@@ -20,7 +20,7 @@ public class CardRate implements Rate{
     @Override
     public Integer addRate(Order order){
         int cardRate = 0;
-        Integer cardSum = order.getCustomer().getCard();
+        Integer cardSum = order.getCustomer().getCard().getSum();
         if (cardSum != null) {
             cardRate = cardSum * 10 / 100;
             if (cardRate > order.getpureCost() * 30 / 100) {

@@ -5,6 +5,7 @@
  */
 package anna.deliveryservice.service;
 
+import anna.deliveryservice.domain.Card;
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.exception.NoSuchCustomerException;
 import anna.deliveryservice.repository.CustomerRepository;
@@ -31,7 +32,7 @@ public class SimpleCustomerService implements CustomerService {
     @Override
     public void giveCard(Customer customer) {
         if (customerRepository.findById(customer.getId()) != null) {
-            customer.setCard(0);
+            customer.setCard(new Card());
         } else {
             throw new NoSuchCustomerException();
         }

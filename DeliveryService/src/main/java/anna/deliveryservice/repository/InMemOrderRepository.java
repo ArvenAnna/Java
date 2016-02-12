@@ -38,7 +38,7 @@ public class InMemOrderRepository implements OrderRepository {
     @Override
     public Order update(Order order) {
         for(Order ord:orders){
-            if(order.getId().equals(ord.getId())){
+            if(order.getId() == ord.getId()){
                 orders.remove(ord);
                 break;
             }

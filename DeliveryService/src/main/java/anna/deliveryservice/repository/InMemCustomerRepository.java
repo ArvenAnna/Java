@@ -20,7 +20,7 @@ public class InMemCustomerRepository implements CustomerRepository{
     private final List<Customer> customers = new ArrayList<Customer>();
     
     @Override
-    public Customer findById(int id) {
+    public Customer findById(long id) {
         for(Customer customer:customers){
             if(id == customer.getId()){
                 return customer;
@@ -32,7 +32,7 @@ public class InMemCustomerRepository implements CustomerRepository{
     @Override
     public Customer update(Customer customer) {
         for(Customer cust:customers){
-            if(customer.getId().equals(cust.getId())){
+            if(customer.getId()==cust.getId()){
                 customers.remove(cust);
                 break;
             }
