@@ -1,26 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.repository;
 
 import anna.deliveryservice.domain.Customer;
-import java.util.ArrayList;
-import java.util.List;
+import anna.deliveryservice.exception.NoSuchCustomerException;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Repository;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * In mem implementation of CustomerRepository
  */
+
 @Repository
 public class InMemCustomerRepository implements CustomerRepository{
 
-    private final List<Customer> customers = new ArrayList<Customer>();
+    private final Set<Customer> customers = new HashSet<Customer>();
     
     @Override
-    public Customer findById(long id) {
+    public Customer findById(Long id) {
         for(Customer customer:customers){
             if(id == customer.getId()){
                 return customer;
@@ -32,18 +29,18 @@ public class InMemCustomerRepository implements CustomerRepository{
     @Override
     public Customer update(Customer customer) {
         for(Customer cust:customers){
-            if(customer.getId()==cust.getId()){
+            if(customer.getId().equals(cust.getId())){
                 customers.remove(cust);
-                break;
+                customers.add(customer);
+                return customer;
             }
-        }
-        customers.add(customer);
-        return customer;
+        }      
+        throw new NoSuchCustomerException();
     }
     
     public void init(){
-       customers.add(new Customer(1,"Vasiliy"));
-       customers.add(new Customer(2,"dddd"));
+       customers.add(new Customer(1L,"Vasiliy"));
+       customers.add(new Customer(2L,"Valeriy"));
     }
     
 }

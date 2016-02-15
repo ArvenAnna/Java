@@ -1,23 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.repository;
 
 import anna.deliveryservice.domain.Order;
-import java.util.ArrayList;
-import java.util.List;
+import anna.deliveryservice.exception.NoSuchOrderException;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Repository;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * In mem implementation of OrderRepository
  */
+
 @Repository
 public class InMemOrderRepository implements OrderRepository {
 
-    private final List<Order> orders = new ArrayList<>();
+    private final Set<Order> orders = new HashSet<>();
 
     @Override
     public Order save(Order order) {
@@ -26,25 +23,24 @@ public class InMemOrderRepository implements OrderRepository {
     }
 
     @Override
-    public Order findById(int id) {
+    public Order findById(Long id) {
         for(Order order:orders){
-            if(id == order.getId()){
+            if(id.equals(order.getId())){
                 return order;
             }
         }
-        return null;
+        throw new NoSuchOrderException();
     }
 
     @Override
     public Order update(Order order) {
         for(Order ord:orders){
-            if(order.getId() == ord.getId()){
+            if(order.getId().equals(ord.getId())){
                 orders.remove(ord);
-                break;
+                return order;
             }
         }
         orders.add(order);
-        return order;
+        throw new NoSuchOrderException();
     }
-
 }

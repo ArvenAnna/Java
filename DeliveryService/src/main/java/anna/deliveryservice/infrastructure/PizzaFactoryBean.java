@@ -1,20 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.infrastructure;
 
 import anna.deliveryservice.domain.Pizza;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Example of FactoryBean<> implementation
  */
+
 public class PizzaFactoryBean implements FactoryBean<Pizza>{
 
-    private Integer id;
+    private Long id;
     private String name;
     private Pizza.PizzaType type;
     private Integer price;
@@ -34,7 +30,7 @@ public class PizzaFactoryBean implements FactoryBean<Pizza>{
         return true;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

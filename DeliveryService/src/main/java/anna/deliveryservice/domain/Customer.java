@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.domain;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
- *
- *
+ * @author Anna
+ * Entity represents customer of pizza service
  */
 
 @Entity 
@@ -32,7 +25,7 @@ public class Customer {
     @Id 
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false) 
-    long id;
+    Long id;
     
     @Column(name = "name")
     String name;
@@ -40,7 +33,6 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     Set<Address> address = new HashSet<>();
     
-    //@Value("40")
     @OneToOne
     @JoinColumn(name = "card_id")
     Card card;
@@ -48,7 +40,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(long id, String name) {
+    public Customer(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -71,11 +63,11 @@ public class Customer {
         this.card = card;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -95,9 +87,46 @@ public class Customer {
         this.address = address;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + Objects.hashCode(this.address);
+        hash = 83 * hash + Objects.hashCode(this.card);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Customer other = (Customer) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.address, other.address)) {
+            return false;
+        }
+        if (!Objects.equals(this.card, other.card)) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", name=" + name + ", address=" + address + ", card=" + card + '}';
+        return "Customer{" + "id=" + id + ", name=" + name + ", address=" + 
+                address + ", card=" + card + '}';
     }    
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.service;
 
 import anna.deliveryservice.annotation.BanchMark;
@@ -13,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Implementation of service working with customer
  */
+
 @Service
 public class SimplePizzaService implements PizzaService{
     
@@ -28,8 +24,8 @@ public class SimplePizzaService implements PizzaService{
 
     @Override
     @BanchMark
-    public Pizza find(Integer id) {
-        return pizzaRepository.find(id);
+    public Pizza find(Long id) {
+        return pizzaRepository.findById(id);
     } 
     
     @PostConstruct

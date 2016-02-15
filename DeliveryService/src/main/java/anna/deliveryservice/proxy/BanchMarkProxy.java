@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.proxy;
 
 import anna.deliveryservice.annotation.BanchMark;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import org.apache.log4j.Logger;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Proxy class for benchmarking
  */
 public class BanchMarkProxy {
 
+    private static Logger log = Logger.getLogger(BanchMarkProxy.class);
     private Object realObject;
 
     public BanchMarkProxy(Object realObject) {
@@ -53,8 +50,8 @@ public class BanchMarkProxy {
                     if (realMethod.getName().equals(method.getName()) && realMethod.isAnnotationPresent(BanchMark.class)) {
                         long time = System.nanoTime();
                         returnValue = method.invoke(realObject, args);
-                        System.out.println("BanchMark for method " + method.getName() + " of class " + realObject.getClass().getSimpleName());
-                        System.out.println(System.nanoTime() - time);
+                        log.info("BanchMark for method " + method.getName() + " of class " + realObject.getClass().getSimpleName());
+                        log.info(System.nanoTime() - time);
                         break;
                     }
                 }

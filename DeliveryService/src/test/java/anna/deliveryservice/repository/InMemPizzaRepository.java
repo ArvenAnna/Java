@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.repository;
 
 import anna.deliveryservice.annotation.BanchMark;
@@ -11,14 +6,13 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * In mem implementation of PizzaRepository
  */
 
 public class InMemPizzaRepository implements PizzaRepository{
     
     private Map<Integer, Pizza> pizzas;
-
     
     public void setPizzas(Map<Integer, Pizza> pizzas) {
         this.pizzas = pizzas;
@@ -26,8 +20,8 @@ public class InMemPizzaRepository implements PizzaRepository{
 
     @Override
     @BanchMark
-    public Pizza find(Integer id) {
-        return pizzas.get(id);
+    public Pizza findById(Long id) {
+        return pizzas.get(id.intValue());
     }
     
     @PostConstruct

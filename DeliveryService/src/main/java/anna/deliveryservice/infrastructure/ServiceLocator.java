@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.infrastructure;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Locator for custom container
  */
+
 public class ServiceLocator {
     
     private static ServiceLocator serviceLocator;

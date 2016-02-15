@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.domain;
 
 import anna.deliveryservice.domain.rate.Rate;
 import anna.deliveryservice.exception.TooManyPizzasException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- *
- *
+ * @author Anna
+ * Entity represents order of customer
  */
 @Component
 @Entity 
@@ -38,11 +35,11 @@ public class Order {
     @Id 
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false) 
-    long id;
+    Long id;
     
     @OneToMany()
     @JoinColumn(name = "order_id")
-    List<OrderDetail> details;
+    List<OrderDetail> details = new ArrayList<>();
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -71,19 +68,18 @@ public class Order {
     }
 
     public void setDetails(List<OrderDetail> details) {
+        checkForTooManyPizzasException((details.size()));
         this.details = details;
     }
-
     
-    
-    public void addMorePizzaz(List<Pizza> morePizzas){
+    public void addMorePizzas(List<Pizza> morePizzas){
         checkForTooManyPizzasException((details.size()+ morePizzas.size()));
         for(Pizza p:morePizzas){
-            details.add(new OrderDetail(p.price, p));
+            details.add(new OrderDetail(p));
         }
     }
 
-    public Integer getpureCost() {
+    public Integer getPureCost() {
         Integer sum = 0;
         for (OrderDetail det : details) {
             sum += det.price;
@@ -92,7 +88,7 @@ public class Order {
     }
     
     public Integer getRateCost() {
-        Integer cost = getpureCost();
+        Integer cost = getPureCost();
         if(rates != null){
             for(Rate rate:rates){
                 cost = cost - rate.addRate(this);
@@ -112,7 +108,7 @@ public class Order {
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -124,7 +120,7 @@ public class Order {
         this.rates = rates;     
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -144,16 +140,68 @@ public class Order {
         this.status = status;
     }
 
-    public enum Status {
-        NEW, IN_PROGRSS, CANCELED, DONE
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.details);
+        hash = 29 * hash + Objects.hashCode(this.customer);
+        hash = 29 * hash + Objects.hashCode(this.status);
+        hash = 29 * hash + Objects.hashCode(this.date);
+        hash = 29 * hash + Objects.hashCode(this.rates);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Order other = (Order) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.details, other.details)) {
+            return false;
+        }
+        if (!Objects.equals(this.customer, other.customer)) {
+            return false;
+        }
+        if (this.status != other.status) {
+            return false;
+        }
+        if (!Objects.equals(this.date, other.date)) {
+            return false;
+        }
+        if (!Objects.equals(this.rates, other.rates)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", customer=" + 
-                customer + ", status=" + status + ", MAX_PIZZAS_IN_ORDER=" + 
-                MAX_PIZZAS_IN_ORDER + ", rates=" + rates + '}';
+        return "Order{" + "id=" + id + ", details=" + details + ", customer=" + 
+                customer + ", status=" + status + ", date=" + date + ", rates=" + 
+                rates + '}';
     }
-
     
+    public enum Status {
+        NEW, IN_PROGRSS, CANCELED, DONE
+    }
+   
 }

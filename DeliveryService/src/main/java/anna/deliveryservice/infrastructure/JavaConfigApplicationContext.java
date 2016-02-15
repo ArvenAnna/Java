@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.infrastructure;
 
 import anna.deliveryservice.annotation.PostCreate;
@@ -13,9 +8,10 @@ import java.util.Map;
 import anna.deliveryservice.proxy.BanchMarkProxy;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Custom DI Container
  */
+
 public class JavaConfigApplicationContext implements ApplicationContext {
 
     private Config config;

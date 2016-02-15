@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.domain;
 
+import java.util.Objects;
 import javax.annotation.PreDestroy;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- *
- *
+ * @author Anna
+ * Entity represents address of customer
  */
+
 @Component
 @Entity 
 @Table(name = "address")
@@ -29,7 +26,7 @@ public class Address {
     @Id 
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false) 
-    long id;
+    Long id;
     
     @Value("Kiev")
     @Column(name = "city")
@@ -64,7 +61,7 @@ public class Address {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -107,6 +104,59 @@ public class Address {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        hash = 67 * hash + Objects.hashCode(this.city);
+        hash = 67 * hash + Objects.hashCode(this.street);
+        hash = 67 * hash + Objects.hashCode(this.house);
+        hash = 67 * hash + Objects.hashCode(this.apartment);
+        hash = 67 * hash + Objects.hashCode(this.customer);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Address other = (Address) obj;
+        if (!Objects.equals(this.city, other.city)) {
+            return false;
+        }
+        if (!Objects.equals(this.street, other.street)) {
+            return false;
+        }
+        if (!Objects.equals(this.house, other.house)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.apartment, other.apartment)) {
+            return false;
+        }
+        if (!Objects.equals(this.customer, other.customer)) {
+            return false;
+        }
+        return true;
+    }
+
     
+
+    @Override
+    public String toString() {
+        return "Address{" + "id=" + id + ", city=" + city + ", street=" + 
+                street + ", house=" + house + ", apartment=" + apartment + 
+                ", customer=" + customer.id + '}';
+    }
     
 }

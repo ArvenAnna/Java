@@ -1,24 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.service;
 
 import anna.deliveryservice.domain.Customer;
 import anna.deliveryservice.domain.Order;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Interface for service classes working with order
  */
 public interface OrderService {
 
-    Order placeNewOrder(Customer customer, int... pizzaID);
+    Order placeNewOrder(Customer customer, Long... pizzaID);
 
-    void saveOrder(Order order);
+    Order saveOrder(Order order);
     
-    Order addPizzasToOrder(int orderId, int... pizzaID);
+    Order addPizzasToOrder(Order order, Long... pizzaID);
     
     void payForOrder(Order order);
 }

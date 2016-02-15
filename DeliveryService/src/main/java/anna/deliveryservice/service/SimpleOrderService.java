@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.service;
 
 import anna.deliveryservice.annotation.BanchMark;
@@ -19,21 +14,20 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * Implementation of service working with customer
  */
 
 @Service
 public class SimpleOrderService implements OrderService{
 
-    private static int orderCount = 0;
+    private static Long orderCount = 0L;
 
     private OrderRepository orderRepository;
     private PizzaService pizzaService;
     private CustomerService customerService;
-    //private ApplicationContext appContext;
-    
-    private Order order;
+//    private ApplicationContext appContext;
+//    private Order order;
 
     @Autowired
     public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService, CustomerService customerService) {
@@ -42,28 +36,29 @@ public class SimpleOrderService implements OrderService{
         this.customerService = customerService;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
+//    public void setOrder(Order order) {
+//        this.order = order;
+//    }
+//
+//    public Order getOrder() {
+//        return order;
+//    }
 
 
     @Override
     @BanchMark
-    public Order placeNewOrder(Customer customer, int... pizzaID) {
+    public Order placeNewOrder(Customer customer, Long... pizzaID) {
         orderCount++;
-        List<Pizza> pizzas = new ArrayList<Pizza>();
 
-        for (Integer id : pizzaID) {
-            pizzas.add(getPizzaById(id));
+        List<OrderDetail> details = new ArrayList<>();
+        
+        for (Long id : pizzaID) {
+            details.add(new OrderDetail(getPizzaById(id)));
         }
+
         Order newOrder = createNewOrder();
         newOrder.setCustomer(customer);
-        //OrderDetail details = null;
-        //newOrder.setDetails(details);
+        newOrder.setDetails(details);
         newOrder.setId(orderCount);
         newOrder.setStatus(Order.Status.NEW);
         
@@ -82,23 +77,26 @@ public class SimpleOrderService implements OrderService{
 //    }
 
     @Override
-    public void saveOrder(Order order) {
-        orderRepository.save(order);
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
     }
 
     @Override
-    public Order addPizzasToOrder(int orderId, int... pizzaID) {
-        Order order = orderRepository.findById(orderId);
+    public Order addPizzasToOrder(Order order, Long... pizzaID) {
         if (order == null) {
             throw new NoSuchOrderException();
         }
 
         List<Pizza> pizzas = new ArrayList<Pizza>();
-        for (Integer id : pizzaID) {
+        int i =0;
+        for (Long id : pizzaID) {
+            
             pizzas.add(getPizzaById(id));
+            System.out.println(pizzas.get(i));
+            i++;
         }
         
-        order.addMorePizzaz(pizzas);
+        order.addMorePizzas(pizzas);
         order.setStatus(Order.Status.IN_PROGRSS);
         return orderRepository.update(order);
     }
@@ -108,14 +106,12 @@ public class SimpleOrderService implements OrderService{
         order.setStatus(Order.Status.DONE);
         orderRepository.update(order);
         if(order.getCustomer().getCard()!=null){
-            customerService.addSumToCard(order.getCustomer(), order.getpureCost());
+            customerService.addSumToCard(order.getCustomer(), order.getPureCost());
         }     
     }
 
-    private Pizza getPizzaById(Integer id) {
+    private Pizza getPizzaById(Long id) {
         return pizzaService.find(id);
     }
 
-    public void init() {
-    }
 }

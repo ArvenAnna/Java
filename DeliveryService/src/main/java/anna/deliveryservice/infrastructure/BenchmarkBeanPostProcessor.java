@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package anna.deliveryservice.infrastructure;
 
-import anna.deliveryservice.annotation.BanchMark;
 import anna.deliveryservice.proxy.BanchMarkProxy;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
- *
- * @author Alex
+ * @author Anna
+ * BeanPostProcessor for benchmarking
  */
+
 //for such class inheritance of application contexts not works
 public class BenchmarkBeanPostProcessor implements BeanPostProcessor{
 
